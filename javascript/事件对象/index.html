@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>事件对象</title>
+	<style>  
+		.da{
+			width:200px;
+			height:200px;
+			background: red;
+			border:1px solid green;
+		}
+		.selected{
+			background: green;
+		}
+
+	</style>
+</head>
+<body>
+	<div class='da'></div>
+	<div class='da'></div>
+</body>
+<!-- js 写在body后 可以直接执行 不用window.onload -->
+<script>
+	// var el=document.getElementById("da");
+	// console.log(el);
+	var els=document.getElementsByClassName("da");
+	// console.log(els);
+
+	for(var i=0;i<els.length;i++){
+		//循环给不同的对象注册函数 注册的函数 保存的地址是不一样的 执行的对象也不一样  函数是独立的，不同的  函数中的变量也是独立的 不能互相引用
+		els[i].onclick=(function(){
+			var kaiguan=true;
+			return function(e){
+				if(e.ctrlKey){
+					this.className=kaiguan?"da selected":"da";
+					kaiguan=!kaiguan;
+				}
+			}
+		})();
+	}
+
+
+	// el.onclick=(function(){
+	// 	var kaiguan=true;
+	// 	return function(e){
+	// 		if(e.ctrlKey && e.altKey && e.shiftKey){
+	// 			this.className=kaiguan?"da selected":"da"
+	// 			kaiguan=!kaiguan;
+	// 		}
+	// 	}
+	// })();
+
+
+
+	// el.onmousemove=function(e){
+	// 	console.log("mousemove",e);
+	// }
+	el.onclick=function(e){
+		console.log("onclick",e);
+		// this.className='da selected';
+	}
+	// el.onmouseover=function(e){
+	// 	console.log("mouseover",e);
+	// }
+	// el.onmouseout=function(e){
+	// 	console.log("mouseout",e);
+	// }
+	// el.onmousedown=function(e){
+	// 	console.log("mousedown",e);
+	// }
+	// el.onmouseup=function(e){
+	// 	console.log("mouseup",e);
+	// }
+	// el.ondbclick=function(e){
+	// 	console.log("ondbclick",e);
+	// }
+
+</script>
+</html>

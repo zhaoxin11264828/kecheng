@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>lianxi</title>
+	<style>
+		.one{
+			width:100px;
+			height:100px;
+			float:left;
+			border:1px solid green;
+			background: red;
+			/*position: absolute;*/
+
+		}
+		.select{
+			background: green;
+		}
+		.two{
+			position: absolute;
+			left:0px;
+			top:0px;
+		}
+
+	</style>
+</head>
+<body>
+	<div class='one'></div>
+	<div class='one'></div>
+	<div class='one'></div>
+	<div class='one'></div>
+	<div class='one'></div>
+</body>
+<script>
+	var els=document.getElementsByClassName("one");
+	// console.log(els);
+	for(var i=0;i<els.length;i++){
+		els[i].onclick=(function(){
+			var kaiguan=true;
+			return function(e){
+				if(e.ctrlKey){
+
+
+					//方法1
+					// this.className=kaiguan?"one select":"one";
+					// if(kaiguan===false){
+					// 	this.style.position='static';
+					// }
+					// kaiguan=!kaiguan;
+
+
+
+					//方法2
+					if(kaiguan){
+						this.className="one select";
+						var r=Math.floor(Math.random()*255);
+						var g=Math.floor(Math.random()*255);
+						var b=Math.floor(Math.random()*255);
+						this.style.backgroundColor="rgb("+r+","+g+","+b+")";
+						kaiguan=false;
+
+					}else{
+						this.className='one';
+						this.style.backgroundColor="transparent";
+						this.style.position='static';
+						kaiguan=true;
+					}
+					
+					
+
+					
+				}
+			}
+		})();
+		
+		}
+		document.ondblclick=function(e){
+			var selecteds=document.getElementsByClassName("select");
+			console.log(selecteds);
+			for(var i=0;i<selecteds.length;i++){
+				selecteds[i].style.position="absolute";
+				selecteds[i].style.left=e.clientX-selecteds[i].offsetWidth/2+"px";
+				selecteds[i].style.top=e.clientY-selecteds[i].offsetHeight/2+"px";
+			}
+
+		}
+		
+
+
+
+</script>
+</html>
