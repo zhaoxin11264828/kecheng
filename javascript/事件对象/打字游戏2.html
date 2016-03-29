@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>打字游戏2</title>
+	<style>
+	.box{
+		width:1000px;
+		height:500px;
+		margin:80px auto;
+		border:1px solid #ccc;
+		position: relative;
+		overflow: hidden;
+	}
+	.zi{
+		width:50px;
+		height:50px;
+		background: red;
+		text-align:center;
+		line-height: 50px;
+		color:white;
+		margin:1px 1px;
+		position: absolute;
+		opacity: 0.8;
+	}
+
+	</style>
+</head>
+<body>
+	<div class='box'></div>
+</body>
+<script>
+	var boxs=document.querySelector(".box");
+	var zimujihe={};
+	var sum=5;
+	
+	var create=function(){
+		do{
+			var zimu=String.fromCharCode(Math.floor(Math.random()*25+97));
+		}while(zimujihe[zimu])//去重
+		
+		var el=document.createElement("div");
+		el.className="zi";
+		el.innerHTML=zimu;
+		boxs.appendChild(el);
+		var r=Math.floor(Math.random()*255);
+		var g=Math.floor(Math.random()*255);
+		var b=Math.floor(Math.random()*255);
+		el.style.backgroundColor="rgb("+r+","+g+","+b+")";
+		el.style.left=Math.random()*(boxs.offsetWidth-el.offsetWidth)+"px";
+		var random=Math.ceil(Math.random()*5);
+
+		zimujihe[zimu]={top:0,yuanshu:el,off:random};
+		
+
+	}
+	for(var j=0;j<sum;j++){
+		create();
+	}
+	
+	var remove=function(zimu){
+		var el=zimujihe[zimu].yuanshu;
+		el.parentElement.removeChild(el);
+		delete zimujihe[zimu];
+
+	}
+
+	document.onkeyup=function(e){
+		if(e.keyCode===32){
+			toggleGame();
+			return;
+		}
+		var key=String.fromCharCode(e.keyCode).toLowerCase();
+		if (zimujihe[key]){
+			remove(key);
+			create();
+
+		}
+
+	}
+
+
+	var boxH=boxs.offsetHeight;
+	var diao=function(){
+		var arr=[];
+		for(var i in zimujihe){	
+		    var data=zimujihe[i];		
+			var el=data.yuanshu;
+			var offs=data.off;
+			data.top+=offs;
+			el.style.top=data.top+"px";
+			if(data.top>boxH){
+				arr.push(i);
+
+			}
+		}
+		if(arr.length!==0){
+			remove(arr[0]);
+			create();
+		}
+
+	}
+    var timerId=setInterval(diao,20);
+  
+  var  toggleGame=function(){
+    if(timerId){  
+   	 	clearInterval(timerId)
+    	timerId=null;
+
+	}else{
+		timerId=setInterval(diao,20);
+	}
+}
+
+//点击控制
+	document.onclick=function(){
+	if(timerId){ 
+		clearInterval(timerId)
+    	timerId=null;
+	}else{
+		timerId=setInterval(diao,20);
+	}
+   	 	
+	}
+
+
+</script>
+</html>

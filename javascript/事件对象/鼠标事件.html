@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>lianxii</title>
+	<style>
+	.one{
+		width:200px;
+		height:200px;
+		border:1px solid #ccc;
+		opacity: 0.6;
+		margin:0px 2px;
+		float: left;
+		transition:all .5s ease;
+	}
+	.selected{
+		background: green;
+	}
+	.two{
+		width:10px;
+		height:50px;
+		background: red;
+		position: absolute;
+	}
+
+	</style>
+</head>
+<body>
+	<div class='one'></div>
+	<div class='one'></div>
+	<div class='one'></div>
+	<div class='one'></div>
+	<div class='one'></div>
+	<div class='two'></div>
+</body>
+<script>
+	var ones=document.getElementsByClassName("one");
+	for(var i=0;i<ones.length;i++){
+		ones[i].onclick=(function(){
+			var kaiguan=true;
+			return function(e){
+				if(e.ctrlKey){
+					if(kaiguan){
+						this.classList.add("selected");
+						var r=Math.floor(Math.random()*255);
+						var g=Math.floor(Math.random()*255);
+						var b=Math.floor(Math.random()*255);
+						this.style.backgroundColor="rgb("+r+","+g+","+b+")";
+						kaiguan=false;
+					}else{
+						this.classList.remove("selected");
+						this.style.backgroundColor="transparent";
+						this.style.position="static";
+						kaiguan=true;
+					}
+				}
+			}
+
+		})();
+
+	}
+	document.ondblclick=function(e){
+		var selecteds=document.getElementsByClassName("selected");
+		for(var i=0;i<selecteds.length;i++){
+			var el=selecteds[i];
+			el.style.position="absolute";
+			el.style.left=e.clientX-el.offsetWidth/2+"px";
+			el.style.top=e.clientY-el.offsetHeight/2+"px";
+		}
+	}
+
+	document.onmousedown=function(e){
+		document.onmouseup=function(ev){
+			var movex=ev.clientX-e.clientX;
+			var movey=ev.clientY-e.clientY;
+			var els=document.getElementsByClassName("selected");
+			for(var i=0;i<els.length;i++){
+				var el=els[i];
+				el.style.left=el.offsetLeft+movex+"px";
+				el.style.top=el.offsetTop+movey+"px";
+
+			}
+		}
+	}
+
+
+	var mb=document.getElementsByClassName("two")[0];
+	// mb.onclick=function(e){
+	// 	if(e.altKey){
+	mb.onmousedown=moved;
+	function moved(e){
+		var oX=e.offsetX;
+		var oY=e.offsetY;
+		console.log(oX,oY)
+		document.onmousemove=move;
+		function move(ev){
+			var cX=ev.clientX;
+			var cY=ev.clientY;
+			// mb.style.position="absolute";
+			mb.style.left=cX-oX+"px";
+			mb.style.top=cY-oY+"px";
+
+		}
+		document.onmouseup=function(){
+				mb.style.position='static';
+			}
+			}
+// 	}
+// }
+</script>
+</html>
