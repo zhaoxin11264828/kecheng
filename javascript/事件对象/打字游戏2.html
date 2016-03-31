@@ -10,29 +10,54 @@
 		margin:80px auto;
 		border:1px solid #ccc;
 		position: relative;
-		overflow: hidden;
+		overflow: hidden;	
+		background: url(./image/背景.jpg) no-repeat ;
 	}
 	.zi{
-		width:50px;
-		height:50px;
+		width:60px;
+		height:60px;
+		border-radius:5px;
 		background: red;
 		text-align:center;
-		line-height: 50px;
+		line-height: 60px;
 		color:white;
 		margin:1px 1px;
+		padding:1px 1px;
 		position: absolute;
-		opacity: 0.8;
+		opacity:0.8;
+		font-size: 60px;
+		/*background: url(./image/贝壳1.png) no-repeat -4px -11px;*/
 	}
-
+	.start{
+		width:120px;
+		height:60px;
+		border-radius:5px;
+		border:1px solid #ccc;
+		text-align:center;
+		line-height: 60px;
+		color:blue;
+		margin:1px 1px;
+		position: absolute;
+		right:10px;
+		bottom:80px;
+		opacity:0.8;
+		font-size: 24px;
+		float:right;
+		display: inline-block;
+		cursor: pointer;
+		/*background: url(./image/444.jpg) no-repeat -4px -11px;*/
+	}
 	</style>
 </head>
 <body>
 	<div class='box'></div>
+	<div class='start'>开始游戏</div>
 </body>
 <script>
 	var boxs=document.querySelector(".box");
 	var zimujihe={};
 	var sum=5;
+	var starts=document.querySelector(".start");
 	
 	var create=function(){
 		do{
@@ -89,7 +114,7 @@
 			var offs=data.off;
 			data.top+=offs;
 			el.style.top=data.top+"px";
-			if(data.top>boxH){
+			if(data.top>(boxH-40)){
 				arr.push(i);
 
 			}
@@ -113,16 +138,29 @@
 }
 
 //点击控制
-	document.onclick=function(){
+	// document.onclick=function(){
+	// if(timerId){ 
+	// 	clearInterval(timerId)
+ //    	timerId=null;
+	// }else{
+	// 	timerId=setInterval(diao,20);
+	// }
+   	 	
+	// }
+
+
+starts.onclick=function(){
 	if(timerId){ 
 		clearInterval(timerId)
+		starts.innerHTML="开始游戏";
     	timerId=null;
 	}else{
 		timerId=setInterval(diao,20);
+		starts.innerHTML="结束游戏";
+
 	}
    	 	
 	}
-
 
 </script>
 </html>

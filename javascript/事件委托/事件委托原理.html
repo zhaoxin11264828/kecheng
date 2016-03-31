@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>事件委托原理</title>
+	<style>
+		.da{
+			width:400px;
+			height:400px;
+			border:1px solid #ff4567;
+			padding:5px;
+		}
+		.xiao{
+			float: left;
+			width:80px;
+			height:80px;
+			padding:10px;
+			text-align: center;
+			margin-right: 5px;
+			background: #aaee56;
+
+		}
+	    #list{
+	    	float: left;
+			width:30px;
+			height:30px;
+			line-height: 30px;
+			margin-right: 2px;
+			margin-bottom: 2px;
+			background: #ff3456;
+	    }
+	</style>
+</head>
+<body>
+	<div class='da'>
+		<div class="xiao">
+			<span id='list' class='zan'>赞</span>
+			<span id='list' class='ping'>评</span>
+			<span id='list' class='cai'>踩</span>
+			<span id='list' class='bao'>报</span>
+		</div>
+	</div>
+</body>
+<script>
+	var da=document.querySelector(".da");
+	document.ondblclick=function(){
+		var el=document.createElement("div");
+		// var inner=Math.random().toFixed(2);
+		el.classList.add("xiao");
+		el.innerHTML="<span id='list' class='zan'>赞</span><span id='list' class='ping'>评</span><span id='list'class='cai'>踩</span><span id='list' class='bao'>报</span>";
+		da.appendChild(el);
+	}
+
+
+	var zanhandel=function(e){
+		console.log(this,e)
+		this.style.background="green";
+		console.log("zan")
+	}
+    var caihandel=function(e){
+    	console.log(this,e)
+    	this.style.background="green";
+		console.log("cai")
+	}
+	var pinghandel=function(e){
+		console.log(this,e)
+		this.style.background="green";
+		console.log("ping")
+	}
+	var baohandel=function(e){
+		console.log(this,e)
+		this.style.background="green";
+		console.log("bao")
+	}
+
+
+	da.onclick=function(e){
+		var el=e.target;
+		if(el.classList.contains("zan")){
+			zanhandel.call(el,e)
+		}
+		else if(el.classList.contains("cai")){
+			caihandel.call(el,e)
+		}
+		else if(el.classList.contains("ping")){
+			pinghandel.call(el,e)
+		}
+		else if(el.classList.contains("bao")){
+			baohandel.call(el,e)
+		}
+
+	}
+
+</script>
+</html>

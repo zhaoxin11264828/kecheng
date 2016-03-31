@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>事件委托</title>
+	<style>
+	.tip{
+		width:300px;
+		height:30px;
+		margin:10px auto;
+	}
+	.feeds{
+		width:300px;
+		position:absolute;
+		top:50px;
+		right:0px;
+		left:0px;
+		bottom:0px;
+		margin:auto;
+		border:1px solid #ccc;
+		padding:10px;
+		text-align: center;
+	}
+	.feeds1{
+		width:300px;
+		position:absolute;
+		top:50px;
+		right:0px;
+		left:0px;
+		bottom:0px;
+		margin:auto;
+		border:1px solid #ccc;
+		padding:10px;
+		text-align: center;
+		float:left;
+	}
+	.feed{
+		width:280px;
+		height:100px;
+		border:1px solid #ccc;
+		margin-bottom: 10px;
+
+
+	}
+	.zan1{
+		color:#ff3456;
+
+	}
+	</style>
+</head>
+<body>
+	<div class='tip'>有5条新微博</div>
+	<div class='feeds'>
+		<div class='feed'>
+			<span class='name'>zhangsan</span>
+			<p class='news'>今天天气很好</p>
+			<span class='zan'>赞(26)</span>
+		</div>
+		<div class='feed'>
+			<span class='name'>zhangsan</span>
+			<p class='news'>今天天气很好</p>
+			<span class='zan'>赞(26)</span>
+		</div>
+	</div>
+	<!-- <div class='feeds1'></div> -->
+</body>
+<script>
+	var feeds=document.querySelector(".feeds");
+	var zan=document.querySelectorAll(".zan");
+	
+	// for(var i=0;i<zan.length;i++){
+
+	// 	zan[i].onclick=(function(){
+	// 		var kaiguan=true;
+	// 		return function(){
+	// 			if(kaiguan===true){
+	// 				console.log(kaiguan)
+	// 			this.classList.add("zan1");
+	// 			var num=parseInt(this.innerHTML.slice(2).slice(0,-1))+1;				
+	// 			this.innerHTML="赞"+"("+num+")";
+	// 			kaiguan=false;
+	// 		}else{
+	// 			kaiguan=true;
+	// 			this.classList.remove("zan1");
+	// 			var num=parseInt(this.innerHTML.slice(2).slice(0,-1))-1;
+	// 			console.log(num)
+	// 			this.innerHTML="赞"+"("+num+")";
+	// 		}
+	// 		}
+	// 	})()
+	// }
+
+	var tip=document.querySelector(".tip");
+	var shuzu=[
+				{name:"wnagwu",news:"天气很好",zan:"34"},
+				{name:"wnagwu",news:"天气很好",zan:"34"},
+				{name:"wnagwu",news:"天气很好",zan:"34"},
+			]
+
+	tip.onclick=function(){
+
+		for(var i=0;i<3;i++){
+			var data=shuzu[i];
+			var el=document.createElement("div");
+			el.className='feed';
+			el.innerHTML="<span>"+data.name+"</span><p>"+data.news+"</p><span class='zan'>"+"赞("+data.zan+")"+"</span>";
+			feeds.insertBefore(el,feeds.firstElementChild);
+		}
+	}
+
+		
+		feeds.onclick=function(e){
+		var el=e.target;
+		
+		if(el.className!=="zan"){
+			alert(1)
+			return;
+		}
+		// el.onclick= (function(){
+		// 	console.log(1)
+		//  var kaiguan=true;
+		//  return function(){
+			var kaiguan=true;
+		 		if(kaiguan===true){
+					
+				el.classList.add("zan1");
+				var num=parseInt(el.innerHTML.slice(2).slice(0,-1))+1;				
+				el.innerHTML="赞"+"("+num+")";
+				kaiguan=false;
+				console.log(kaiguan)
+			}else{
+				kaiguan=true;
+				console.log(kaiguan)
+				el.classList.remove("zan1");
+				var num=parseInt(el.innerHTML.slice(2).slice(0,-1))-1;
+				console.log(num)
+				el.innerHTML="赞"+"("+num+")";
+			}
+
+		//  }
+		// })();
+
+	
+			// 	if(kaiguan===true){
+					
+			// 	el.classList.add("zan1");
+			// 	var num=parseInt(el.innerHTML.slice(2).slice(0,-1))+1;				
+			// 	el.innerHTML="赞"+"("+num+")";
+			// 	kaiguan=false;
+			// }else{
+			// 	kaiguan=true;
+			// 	el.classList.remove("zan1");
+			// 	var num=parseInt(el.innerHTML.slice(2).slice(0,-1))-1;
+			// 	console.log(num)
+			// 	el.innerHTML="赞"+"("+num+")";
+			// }
+
+
+
+			// }
+		// console.log(el.innerHTML)
+
+	}
+</script>
+</html>

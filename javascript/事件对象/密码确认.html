@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		ul,li{
+			margin:0px;
+			padding:0px;
+			list-style: none;
+		}
+		.zhuce{
+			width:400px;
+			height:400px;
+			border:1px solid #ddd;
+			margin: auto;
+			position: absolute;
+			left:0px;
+			top:0px;
+			right:0px;
+			bottom:0px;
+			border-radius: 10px;
+		}
+		/*.zhuce{
+			width:400px;
+			height:400px;
+			margin:auto;
+			position: absolute;
+			left:0px;
+			top:0px;
+			right:0px;
+			bottom:0px;
+			border:1px solid #ccc;
+
+		}*/
+		ul{
+			width:300px;
+			height:300px;
+			margin:40px auto;
+			padding-top: 32px;
+		}
+		ul li{
+			border-bottom:1px solid #aabbcc;
+			margin:20px 10px;
+		}
+		ul input{
+			width:100%;
+			padding:5px;
+			border:none;
+			/*border-bottom: 1px solid #aabbcc;*/
+			outline: none;
+			font-size: 20px;
+		}
+		.warning{
+			display: inline-block;
+			margin:20px auto;
+			border-radius: 3px;
+			font-size: 12px;
+			padding:3px;
+			color:white;
+			background: #F5990A;
+		}
+		.success{
+			display: inline-block;
+			margin:20px auto;
+			border-radius: 3px;
+			font-size: 12px;
+			padding:3px;
+			color:white;
+			background: #33bb23;
+		}
+		.btn1{			
+			color:white;
+			background: #99ffaa;	
+			cursor: pointer;
+		}
+		.btn{
+			display: inline-block;
+			margin:0 100px;
+			padding:3px;
+			border-radius: 3px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+<div class='zhuce'>
+	<ul >
+		<li>
+			<input type="text" name='user' value="zhangsan">
+			<span class='tip'></span>
+		</li>
+		<li>
+			<input type="password" name='pass'>
+			<span class='tip'></span>
+		</li>
+		<li>
+			<input type="password" name='passrepeat'>
+			<span class='tip'></span>
+		</li>
+		
+			<div class='btn'>注册</div>
+	
+	</ul>
+</div>
+</body>
+<script>
+//定义数组 存储已有用户名
+	// var username=[
+	// 	"zhangshan",
+	// 	"lisi",
+	// 	"wangwu",
+	// 	"zhaoliu"
+	// ];
+
+	var passrepeat=document.getElementsByName("passrepeat")[0];
+	// var tip=document.querySelector("#tip");
+	var pass=document.getElementsByName("pass")[0];
+	var user=document.getElementsByName("user")[0];
+	var btn=document.querySelector(".btn");
+
+	//模拟数据表
+	var username={};
+	for(var i=0;i<800;i++){
+		username["item_"+i]=true;
+	}
+
+	//定义状态 存储
+	var state={
+		yi:false,
+		er:false,
+		san:false
+	};
+
+	//判断状态 并调整按钮样式
+	var panduan=function(){
+		if(state["yi"] && state["er"] && state["san"]){
+			btn.classList.add("btn1");
+			console.log(btn)
+			btn.setAttribute("nengfoudianji","neng");
+		}else{
+		btn.classList.remove("btn1");
+		btn.removeAttribute("nengfoudianji");
+		}
+	}
+
+	//按钮单击事件
+	btn.onclick=function(){
+		if(this.hasAttribute("nengfoudianji")){
+			btn.innerHTML='注册中.....';
+			setTimeout(function(){
+				location.href="打字游戏2.html"
+			},2000)
+		}
+	}
+
+ 	//添加警告信息样式
+	var tianjiajingao=function(el,info){
+		var tip=el.parentElement.querySelector(".tip");
+			tip.classList.add('warning');
+			tip.innerHTML=info;
+	}
+	//删除警告信息样式
+	var deletejingao=function(el){
+		var tip=el.parentElement.querySelector(".tip");
+		tip.classList.remove('warning');
+			tip.innerHTML='';
+	}
+
+	//用户名输入框值改变时
+	user.onchange=function(){
+		// var tip=this.parentElement.querySelector(".tip");
+		if(this.value.length==0){
+			tianjiajingao(this,'请输入用户名')
+			// tip.classList.remove("success");
+			// tip.classList.add('warning');
+			// tip.innerHTML='请输入用户名'
+		}else{
+			deletejingao(this)
+			// tip.classList.remove('warning');
+			// tip.innerHTML='';
+		if(username[this.value]){
+			tianjiajingao(this,'用户名已存在')
+			// tip.classList.remove("success");
+			// tip.classList.add('warning');
+			// tip.innerHTML='用户名已存在'
+			state["yi"]=false;
+		}else{
+			state["yi"]=true;
+			deletejingao(this)
+			// tip.classList.remove('warning');
+			// tip.innerHTML='';
+			
+			
+				// username.push(this.value);
+				// console.log(username)
+		
+		}	
+		}
+		panduan();
+	}
+
+
+   //方法1 查找 时间长
+    // var checkuser=function(name){
+	// 	for(var i=0;i<username.length;i++){
+	// 		if(username[i]==name){
+	// 			return true;
+	// 		}
+	// 	}
+	// 	return false;
+
+	// }
+
+	//密码输入框值改变时
+	pass.onchange=function(){
+		// var tip=this.parentElement.querySelector(".tip");
+		if(this.value.length<6){
+			tianjiajingao(this,'少于6位，请重新输入')
+			// tip.classList.remove("success");
+			// tip.classList.add('warning');
+			// tip.innerHTML='少于6位，请重新输入'
+			state["er"]=false;
+		}else{
+			state["er"]=true;
+			deletejingao(this)
+			// tip.classList.remove('warning');
+			// tip.innerHTML='';
+			
+			
+		}
+		panduan();
+	}
+
+	//重新核对密码时 
+	passrepeat.onchange=function(){
+		// var tip=this.parentElement.querySelector(".tip");
+		if(this.value!==pass.value){
+			tianjiajingao(this,'请重新输入')
+			// tip.classList.remove("success");
+			// tip.classList.add('warning');
+			// tip.innerHTML='请重新输入'
+			state["san"]=false;
+		}
+		else{
+			state["san"]=true;
+			deletejingao(this)
+			// tip.classList.remove('warning');
+			// tip.innerHTML='';
+
+			
+		}
+		panduan();
+
+	}
+
+
+</script>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>微博</title>
+	<style>
+		.tip{
+			width:320px;
+			margin:3px auto;
+			border:1px solid #ccc;
+			height:50px;
+			line-height: 50px;
+		}
+		.fabunew{
+			width:320px;
+			margin:3px auto;
+		}
+		.text{
+			width:314px;
+			margin:5px auto;
+			border:1px solid #aaff56;
+			display: none;
+		}
+		.text1{
+			border:1px solid #aaee89;
+		}
+	    .fabu{
+	    	width:314px;
+			display: none;
+	    }
+	    .fabu p{
+	    	display: inline;
+	    	width:200px;
+	    }
+	    .fabubtn{
+	    	float:right;
+	    }
+	    .fabubtn1{
+	    	background: #aaff89;
+	    	color:white;
+	    }
+		.feeds{
+			width: 320px;
+			min-height: 100px;
+			border:1px solid #ccc;
+			margin:5px auto;
+			padding:20px 0px;
+		}
+		.loading{
+			width:300px;
+			color:#aabbcc;
+			background: #aaff89;
+			height:80px;
+			text-align: center;
+			line-height: 80px;
+			font-size: 20px;
+			margin-left: 10px;
+		}
+		.feed{
+			width:300px;
+			height:150px;
+			border:1px solid #ccc;
+			margin-bottom: 5px;
+			margin-left: 10px;
+
+		}
+		.zan-active{
+			color:#ff3456;
+		}
+
+	</style>
+</head>
+<body>
+    <div class='tip'>有5条新微博</div>
+    <div class="fabunew">
+    <textarea class='text' name="news" id="" cols="30" rows="10"></textarea>
+    <div class='fabu'>
+      <p>你还能输入<span>40</span>字</p><span class='fabubtn'>发布</span>
+    </div>
+    </div>
+	<div class='feeds'>
+		<div class='loading'>加载中....</div>
+	</div>
+	
+</body>
+<script>
+	var shuzu=[
+				{name:"wnagwu",news:"天气很好",zan:"34"},
+				{name:"wnagwu",news:"天气很好",zan:"134"},
+				{name:"wnagwu",news:"天气很好",zan:"234"},
+				{name:"wnagwu",news:"天气很好",zan:"334"},
+				{name:"wnagwu",news:"天气很好",zan:"134"},
+				{name:"wnagwu",news:"天气很好",zan:"4234"},
+				{name:"wnagwu",news:"天气很好",zan:"534"},
+				{name:"wnagwu",news:"天气很好",zan:"6134"},
+				{name:"wnagwu",news:"天气很好",zan:"7234"}
+	]
+	var feeds=document.querySelector(".feeds");
+	var load=document.querySelector(".loading");
+	var text=document.querySelector(".text");
+	var fabu=document.querySelector(".fabu");
+	setTimeout(function(){
+		load.style.display="none";
+		text.style.display="inline-block";
+		fabu.style.display="inline-block";
+		for(var i=0,el;i<2;i++){
+			var data=shuzu[i];
+			el=document.createElement("div");
+			el.classList.add("feed");
+			el.innerHTML="<span>"+data.name+"</span><p>"+data.news+"</p><span class='zan zan-active'>"+"赞("+data.zan+")"+"</span>";
+		    feeds.appendChild(el);
+		}
+		
+	},2000)
+
+	var zanhandel=function(e){
+		if(this.classList.contains("zan-active")){
+			var num=parseInt(this.innerHTML.slice(2).slice(0,-1))+1;				
+			this.innerHTML="赞"+"("+num+")";
+			this.classList.toggle("zan-active")
+		}else{
+			var num=parseInt(this.innerHTML.slice(2).slice(0,-1))-1;				
+			this.innerHTML="赞"+"("+num+")";
+			this.classList.toggle("zan-active")
+	}
+}
+
+	feeds.onclick=function(e){
+		var el=e.target;
+		if(el.classList.contains("zan")){
+			zanhandel.call(el,e)
+		}
+	}
+
+
+	var tip=document.querySelector(".tip");
+	tip.onclick=function(){
+		for(var i=0,el;i<5;i++){
+			var ran=Math.floor(Math.random()*shuzu.length)
+			var data=shuzu[ran];
+			el=document.createElement("div");
+			el.classList.add("feed");
+			el.innerHTML="<span>"+data.name+"</span><p>"+data.news+"</p><span class='zan zan-active'>"+"赞("+data.zan+")"+"</span>";
+			var first=feeds.firstElementChild;
+			feeds.insertBefore(el,first);
+		}
+	}
+
+
+	var fabubtn=document.querySelector(".fabubtn");
+	text.onblur=function(){
+		text.classList.remove("text1");
+		if(text.value){
+			fabubtn.classList.add("fabubtn1");
+		}else{
+			fabubtn.classList.remove("fabubtn1");
+		}
+	}
+	text.onfocus=function(){
+         text.classList.add("text1");
+	}
+	text.onkeyup=function(){
+		
+	}
+
+</script>
+</html>

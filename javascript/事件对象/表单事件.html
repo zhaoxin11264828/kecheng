@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>表单事件</title>
+</head>
+<body>
+	<form action="">
+		<input type="text" value='zhangsan' name='user' ><br>
+		<input type="password" value='123456' name='pass'><br>
+		性别：
+		男<input type="radio" value='nan' name='sex' >
+		女<input type="radio" valie='nv' name='sex' checked='checked'>
+		<br>
+		爱好：
+		篮球<input type="checkbox" value='lanqiu' name='likes'>
+		足球<input type="checkbox" value='lanqiu' name='likes'>
+		排球<input type="checkbox" value='lanqiu' name='likes'>
+		<br>
+		个人简历
+		<input type="file" name="file">
+		
+		<br>
+		<textarea name="wenben" id="area" cols="30" rows="10"></textarea>
+		<br>
+		<select name="school" id="select">
+			<option value="sd" selected="selected">山西大学</option>
+			<option value="cd">财经大学</option>
+			<option value="lg">理工大学</option>
+		</select>
+		<br>
+		<input type="button" value='按钮' name='btn'>
+		<br>
+		<input type="reset" value='重置' name='reset'>
+		<br>
+		<input type="submit" value='提交' name='submit'>
+	</form>
+</body>
+<script>
+	// var el=document.getElementsByName("user")[0];
+	var inputs=document.getElementsByTagName("input");
+	var text=document.getElementsByTagName("textarea")[0];
+	var select=document.getElementsByTagName("select")[0];
+	for(var i=0;i<inputs.length;i++){
+		inputs[i].onfocus=function(e){
+		console.log("focus",e);
+		}
+		inputs[i].onblur=function(e){
+		console.log("blur",e);
+		}
+		inputs[i].onchange=function(e){
+		console.log("change",e);
+		}
+	}
+
+	text.onfocus=function(e){
+		console.log("focus",e);
+	}
+	text.onblur=function(e){
+		console.log("blur",e);
+	}
+	text.onchange=function(e){
+		console.log("change",e);
+	}
+
+	select.onfocus=function(e){
+		console.log("focus",e);
+	}
+	select.onblur=function(e){
+		console.log("blur",e);
+	}
+	select.onchange=function(e){
+		console.log("change",e);
+	}
+
+	// el.onfocus=function(){
+	// 	console.log("focus");
+	// }
+	// el.onblur=function(){
+	// 	console.log("blur");
+	// }
+	// el.onchange=function(){
+	// 	console.log("change");
+	// }
+
+
+</script>
+</html>
