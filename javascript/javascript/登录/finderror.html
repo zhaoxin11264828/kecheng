@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>error</title>
+	<style>
+	#box{
+		width:400px;
+		height:300px;
+		border:1px solid #f4f4f4;
+		position: absolute;
+
+	}
+	#title{
+		width:400px;
+		height: 40px;
+		text-align: center;
+		line-height: 40px;
+		margin:10px auto;
+		
+	}
+	#con{
+		width:100%;
+		height:1px;
+		margin:20px auto;
+		background:#f4f4f4; 
+	}
+	#tiem{
+		width:400px;
+		height:60px;
+		text-align: center;
+		line-height: 60px;
+		margin-top: -10px
+	}
+	#now{
+		width:200px;
+		height:30px;
+		margin:20px auto;
+		border:1px solid #ccc;
+		text-align: center;
+		box-shadow: 0px 3px 10px #ECECEC;
+		line-height: 30px;
+	}
+	#djs{
+		color:red;
+		font-size:16px;
+		margin:100px auto;
+	}
+	</style>
+</head>
+<script>
+	window.onload=function(){
+		//把box放到页面中间
+		var box=document.getElementById('box');
+		var cw=document.documentElement.clientWidth;
+		var ch=document.documentElement.clientHeight;
+		var lefts=(cw-400)/2;
+		var tops=(ch-300)/2;
+
+		box.style.left=lefts+'px';
+		box.style.top=tops+'px';
+		//点击马上返回
+		var now=document.getElementById('now');
+        now.onclick=function(){
+        	location.assign("findme.html");
+        }
+        //倒计时   操作元素的内容djs.innerHTML=4
+        var djs=document.getElementById('djs');
+        var num=5;
+        var t=setInterval(move,1000);
+
+        function move(){
+        	num--;
+        	if(num==0){
+        		location.assign('findme.html');
+        	}
+        	
+        	djs.innerHTML=num; 
+        }
+	}
+</script>
+<body>
+	<!-- 这是error.html -->
+	<div id='box'>
+		<div id='title'>Error
+			
+		</div>
+
+		<div id='con'>
+		</div>
+
+		<div id='tiem'>
+		<span id='djs'>
+			5
+		</span>s后返回上一页			
+		</div>
+
+		<div id='now'>
+		 马上返回			
+		</div>
+
+	</div>
+</body>
+</html>

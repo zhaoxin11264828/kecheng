@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		div{
+			width:300px;
+			height:300px;
+			background: blue;
+			margin:100px auto;
+			background: url('10.jpg') no-repeat;
+		}
+	</style>
+</head>
+	<script>
+	window.onload=function(){
+		var divs=document.getElementsByTagName('div')[0];
+		var flag=true;
+   	 	var t;
+   	 	var objw=parseInt(getstyle(divs,"width"));
+   	 	var objh=parseInt(getstyle(divs,"height"));
+   	 	var widths=objw;
+   	 	var heights=objh;
+   	 	var speed=10;
+    document.documentElement.onclick=function(){	
+	
+	if(flag){
+	    t=setInterval(function(){
+	    	if(widths>=600){
+	    		widths=600;
+	    		heights=600;
+	    		speed=-speed;
+	    	}else if(heights<=300){
+	    		widths=300;
+	    		heights=300;
+	    		speed=10;
+	    	}
+	    	widths+=speed;
+	    	heights+=speed;
+		divs.style.width=widths+'px';
+		divs.style.height=heights+'px';
+	},200)
+		flag=false;
+	}else{
+		clearInterval(t)
+		flag=true;
+	}
+	
+}
+function getstyle(obj,attr){
+			// return getComputedStyle(obj,null)[attr];
+			if(obj.currentStyle){
+				return obj.currentStyle[attr];
+			}
+			else{
+				return getComputedStyle(obj,null)[attr];
+			}
+		}
+
+
+
+}
+	</script>
+<body>
+<span><marquee behavior="scroll" direction="right">点击空白处</marquee></span>
+     <div>
+     	
+     
+     </div>
+</body>
+</html>

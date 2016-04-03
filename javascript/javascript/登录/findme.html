@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>login</title>
+	<script>
+	window.onload=function(){
+		var box=document.getElementById('box');
+		var cw=document.documentElement.clientWidth;
+		var ch=document.documentElement.clientHeight;
+		var lefts=(cw-400)/2;
+		var tops=(ch-300)/2;
+
+		box.style.left=lefts+'px';
+		box.style.top=tops+'px';
+		//获取user的值
+		//提交
+		var user=document.getElementById("user");
+		var  sub=document.getElementById("sub");
+		// console.log (user+'******'+sub);
+		// console.log(user.value)
+		sub.onclick=function(){
+			if(user.value=='很漂亮'){
+				alert("谢谢夸奖");
+
+			}
+			else{
+				open("finderror.html")
+			}
+		}
+
+}
+</script>
+</head>
+<style>
+	#box{
+		width:400px;
+		height:300px;
+		border:1px solid #f4f4f4;
+		position: absolute;
+
+	}
+	#text{
+		width:400px;
+		height: 40px;
+		text-align: center;
+		line-height: 40px;
+		margin:10px auto;
+		
+	}
+	#item{
+		width:400px;
+		height:60px;
+		text-align: center;
+		line-height: 60px;
+		margin-top: -10px
+	}
+</style>
+
+<body>
+	<div id='box'>
+    <div id='text'>我漂亮吗？</div>
+
+    <div id='item'>
+	<input type="text" name='user' value='三个字' id='user'>
+	<input type="submit" name='sub' value='提交' id='sub'>
+	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>login</title>
+	<script>
+	window.onload=function(){
+		//获取user的值
+		//提交
+		var user=document.getElementById("user");
+		var  sub=document.getElementById("sub");
+		// console.log (user+'******'+sub);
+		// console.log(user.value)
+		sub.onclick=function(){
+			if(user.value=='zhangsan'){
+				alert("登录成功");
+
+			}
+			else{
+				open("error.html")
+			}
+		}
+
+}
+</script>
+</head>
+
+<body>
+	<input type="text" name='user' value='zhangsan' id='user'>
+	<input type="submit" name='sub' value='提交' id='sub'>
+</body>
+</html>

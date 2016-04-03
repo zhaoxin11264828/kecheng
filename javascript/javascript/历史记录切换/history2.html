@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+	
+	window.onload=function(){
+		alert(history.length);
+		var forword1=document.getElementById("forword");
+		var back1=document.getElementById("back");
+		var go1=document.getElementById("go");
+		forword1.onclick=function(){
+			// history.forward();
+			history.go(1);
+		}
+		back1.onclick=function(){
+			// history.back();
+			history.go(-1)
+		}
+		go1.onclick=function(){
+			history.go(0);
+		}
+	}
+	</script>
+</head>
+<style>
+	div{
+		width:200px;
+		height: 30px;
+		line-height: 30px;
+		text-align: center;
+		border: 1px solid red;
+		margin-top:10px;
+	}
+</style>
+<body>
+<div>
+	这是history2.html
+</div>
+	<a href="history.html">调到history.html</a>
+<div id="forword">前进</div>
+<div id="back">后退</div>
+</body>
+</html>

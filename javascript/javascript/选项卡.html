@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>选项卡</title>
+	<style>
+	 ul,li{
+		padding: 0;
+		margin:0;
+		list-style:none;
+		display: block;
+	}
+	a{
+		text-decoration: none;
+		display:block;
+		color:#000;
+	}
+	.option{
+		width:1200px;
+		height:40px;
+		background: #e4e4e4;
+		margin:100px auto;
+		position: relative;
+	}
+	.mainMenu{
+		width:1200px;
+		height:40px;
+	}
+	.mainMenu li{
+		float: left;
+		border-right:1px solid #fff;
+		width:131px;
+		height:40px;
+		text-align: center;
+		line-height: 40px;
+	}
+	.mainMenu a{
+		color:#666;
+		font-size: 16px;
+	}
+	.mainMenu a:hover{
+		background:#f3f3f3;
+		color:#0085d0;
+
+	}
+	.downMenu{
+		width:1200px;
+		height:40px;
+		background: #fff;
+		box-shadow: 0px 2px 5px #000;
+		position: absolute;
+		top:41px;
+		left:0;
+		display:none;
+	}
+
+	.downitem{
+		border:1px solid #fff;
+		border-top:none;
+		width:1198px;
+		height:40px;
+		text-align: center;
+		line-height: 40px;
+	}
+	.downitem li{
+		float:left;
+		width:130px;
+		height:40px;
+		text-align: center;
+		line-height: 40px;
+	}
+	.downitem a{
+		display: block;
+		text-decoration: none;
+		color:#666;
+		font-size: 14px;
+	}
+	.downitem a:hover{
+		background:#fff;
+		color:#0085d0;
+		text-decoration:#0085d0  underline solid;
+
+	}
+	</style>
+	<script>
+	//效果：鼠标移动到主菜单时 小菜单出现
+	 // 思路：1、获取主菜单对象 小菜单对象 及范围对象
+	  //      2、遍历 实现 点击每个做出反应
+	   //       3、控制对应小菜单的显示来实现
+	 window.onload=function(){
+	 	//class名获取对象时 有兼容性问题 使用封装好的$函数
+	 	var mainMenus=$(".mainMenu")[0];
+
+	 	var items1=$(".item",mainMenus);
+	 	var downMenus1=$(".downMenu");
+	 	optioncard(items1,downMenus1)
+	 	
+	 }
+
+	 //选项卡 封装
+	 //items  主菜单有效果的li
+	 //downMenus  对应的子菜单
+	 function optioncard(items,downMenus){
+	 	for(var i=0;i<items.length;i++){
+	 		items[i].index=i;//添加属性 存放i 每次循环的值
+		items[i].onmouseover=function(){//在事件触发时 函数才开始执行
+
+			for(var j=0;j<items.length;j++){
+				console.log(downMenus[j])
+				downMenus[j].style.display='none';
+			}
+			downMenus[this.index].style.display='block';
+			
+		}
+		items[i].onmouseout=function(){
+			for(var j=0;j<items.length;j++){
+				downMenus[j].style.display='none';
+			}
+		}
+	}
+}
+
+
+	 //1获取对象  函数机
+	 function $(selecter,ranges){
+			if(typeof selecter=="string"){
+			var ranges=ranges?ranges:document;
+			var first=selecter.charAt(0);//返回在指定位置的字符串
+			if(first=='#'){
+				return document.getElementById(selecter.substring(1));//截取字符串 substring(起始，结束)不包括结束位置
+			}
+			else if(first=='.'){
+				return getClass(selecter.substring(1),ranges);//类函数
+			}else if(/^[a-z][a-z1-6]{0,10}$/.test(selecter)){//匹配名字是否符合标准//正则表达式
+				return ranges.getElementsByTagName(selecter);
+
+			}else if(/^<[a-z][a-z1-6]{0,10}>$/.test(selecter)){
+				//判断输入的是一个<div>新的div时
+				return ranges.createElement(selecter.slice(1,-1));
+			}
+		}else if(typeof selecter=='function'){
+				addEvent(window,"load",selecter)
+			}
+		}
+		//解决 获取class名对象时  兼容性的问题 
+// className   要获取的class名 
+// range 范围
+function getClass(className,range){
+	var range=range?range:document;
+	if(range.getElementsByClassName){
+		return range.getElementsByClassName(className);
+
+	}else{
+		var all=range.getELementsByTagName('*');
+		var newarr=[];
+		for(var i=0;i<all.length;i++){
+// 			if(all[i].className==className)
+			if(checkClass(all[i],className))//检查class名中有没有要找的class名字符串
+			{
+					newarr.push(all[i]);
+			}
+		}
+		return newarr;
+	}
+}
+////检查class名中有没有要找的class名字符串
+function checkClass(obj,classname){
+	var arrC=obj.className.split("");//按空格分割  字符串分割成数组
+	for(var i=0;i<arrC.length;i++){
+		if(arrC[i]==classname){
+			return true;
+		}
+	}
+	return false;
+}
+
+
+	</script>
+
+</head>
+<body>
+	<div class="option">
+		<ul class="mainMenu">
+			<li class="item1" id="homepage">
+				<a href="javascript:;">首页</a>
+			</li>
+			<li class="item">
+				<a href="javascript:;">服装城</a>
+				<div class="downMenu">
+					<ul class='downitem'>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">男装</a></li>
+						<li><a href="javascript:;">新装</a></li>
+						<li><a href="javascript:;">女装女装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装女装女</a></li>
+						<li><a href="javascript:;">女装</a></li>
+					</ul>
+				</div>
+			</li>
+			<li class="item">
+				<a href="javascript:;">美妆馆</a>
+				<div class="downMenu">
+					<ul class='downitem'>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">男装</a></li>
+						<li><a href="javascript:;">新装</a></li>
+						<li><a href="javascript:;">女装女装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装女装女</a></li>
+						<li><a href="javascript:;">女装</a></li>
+					</ul>
+				</div>
+			</li>
+			<li class="item">
+				<a href="javascript:;">超市</a>
+				<div class="downMenu">
+					<ul class='downitem'>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">男装</a></li>
+						<li><a href="javascript:;">新装</a></li>
+						<li><a href="javascript:;">女装女装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装女装女</a></li>
+						<li><a href="javascript:;">女装</a></li>
+					</ul>
+				</div>
+			</li>
+			<li class="item">
+				<a href="javascript:;">全球购</a>
+				<div class="downMenu">
+					<ul class='downitem'>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">男装</a></li>
+						<li><a href="javascript:;">新装</a></li>
+						<li><a href="javascript:;">女装女装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装女装女</a></li>
+						<li><a href="javascript:;">女装</a></li>
+					</ul>
+				</div>
+			</li>
+			<li class="item">
+				<a href="javascript:;">闪购</a>
+				<div class="downMenu">
+					<ul class='downitem'>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">男装</a></li>
+						<li><a href="javascript:;">新装</a></li>
+						<li><a href="javascript:;">女装女装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装女装女</a></li>
+						<li><a href="javascript:;">女装</a></li>
+					</ul>
+				</div>
+			</li>
+			<li class="item">
+				<a href="javascript:;">团购</a>
+				<div class="downMenu">
+					<ul class='downitem'>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">男装</a></li>
+						<li><a href="javascript:;">新装</a></li>
+						<li><a href="javascript:;">女装女装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装女装女</a></li>
+						<li><a href="javascript:;">女装</a></li>
+					</ul>
+				</div>
+			</li>
+			<li class="item">
+				<a href="javascript:;">拍卖</a>
+				<div class="downMenu">
+					<ul class='downitem'>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">男装</a></li>
+						<li><a href="javascript:;">新装</a></li>
+						<li><a href="javascript:;">女装女装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装女装女</a></li>
+						<li><a href="javascript:;">女装</a></li>
+					</ul>
+				</div>
+			</li>
+			<li class="item">
+				<a href="javascript:;">金融</a>
+				<div class="downMenu">
+					<ul class='downitem'>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">男装</a></li>
+						<li><a href="javascript:;">新装</a></li>
+						<li><a href="javascript:;">女装女装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装装</a></li>
+						<li><a href="javascript:;">女装</a></li>
+						<li><a href="javascript:;">女装女装女</a></li>
+						<li><a href="javascript:;">女装</a></li>
+					</ul>
+				</div>
+			</li>
+			
+		</ul>
+	</div>
+</body>
+</html>
