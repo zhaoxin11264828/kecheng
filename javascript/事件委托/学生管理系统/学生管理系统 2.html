@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>学生管理系统</title>
+	<style>
+		.content{
+			margin:10px auto;
+			width:1000px;
+			display: inline-block;
+			border:1px solid #ccc;
+			text-align: center;
+		}
+		.content table{
+			width: 100%;
+			border-spacing: 0;
+		}
+		tr{
+			margin:20px 0px;
+			padding:none;
+		}
+
+		td{
+			border-bottom:1px solid #ddd;
+			margin:none;
+			margin-top: 30px;
+		}
+		.add{
+			padding:10px 20px;
+			/*background: #aabbaa;*/
+			margin: 10px 0;
+			display: inline-block;
+			cursor: pointer;
+		}
+		.xiugai{
+			margin-right: 20px;
+			cursor: pointer;
+		}
+		.remove{
+			cursor: pointer;
+		}
+		input{
+			width:80px;
+			text-align: center;
+			outline:none;
+			border: none;
+			border-bottom: 1px solid red;
+		}
+		.submit{
+			cursor: pointer;
+		}
+		
+
+	</style>
+</head>
+<body>
+	<div class="content">
+	<div class='tips'></div>
+		<h1>学生信息管理系统</h1>
+
+		<table>
+		 <thead>
+			<tr>
+				<th>学号</th>
+				<th>姓名</th>
+				<th>性别</th>
+				<th>年龄</th>
+				<th>籍贯</th>
+				<th>身份证号</th>
+				<th><input type="checkbox" ></th>
+			</tr>
+		</thead>
+		<tbody>
+			</tbody>
+		</table>
+		<span class="add">✚</span>
+		<span class="remove">✘</span>
+
+
+	</div>
+</body>
+<script>
+	var tbody = document.querySelector("tbody");
+	if(localStorage.students){
+		var students = JSON.parse(localStorage.getItem("students"));
+	}else{
+		var students=[
+			{xuehao:1001,name:"lisi",sex:"nv",age:21,jiguan:"shanxi",card:12345},
+			{xuehao:1002,name:"lisi",sex:'nv',age:21,jiguan:"shanxi",card:12345},
+			{xuehao:1003,name:"lisi",sex:'nv',age:21,jiguan:"shanxi",card:12345},
+			{xuehao:1004,name:"lisi",sex:'nv',age:21,jiguan:"shanxi",card:12345},
+			{xuehao:1005,name:'lisi',sex:'nv',age:21,jiguan:'shanxi',card:12345}
+		];
+		localStorage.setItem("students",JSON.stringify(students));	
+	}
+
+
+
+    var xuanranshuju = function(){
+	for(var i in students){
+			var el = document.createElement("tr");
+
+			var data = students[i];
+			el.setAttribute("data-id",data.xuehao)
+			el.innerHTML="<td data-role='xuehao'>"+data.xuehao+"</td><td data-role='name'>"+data.name+"</td><td data-role='sex'>"+data.sex+"</td><td data-role='age'>"+data.age+"</td><td data-role='jiguan'>"+data.jiguan+"</td><td data-role='card'>"+data.card+"</td><td><span class='xiugai'>✐</span><input type='checkbox' data-id="+data.xuehao+"></td>"			
+			tbody.appendChild(el);
+		}
+	}
+	xuanranshuju();
+
+	
+	var deletedata = function(id){
+		var newarr = [];
+		for(var k in students){
+			var v = students[k];
+			if(v.xuehao !== id){
+				newarr.push(v);		
+			}
+		}
+		students = newarr;
+	    localStorage.setItem("students",JSON.stringify(students));
+    }
+
+	var deletehandler = function(e){
+		tbody.removeChild(this.parentElement.parentElement);
+		var ID=Number(this.getAttribute("data-id"));
+		deletedata(ID);
+
+	}
+	
+	var xiugaihandler = function(e){
+		var tr = this.parentElement.parentElement
+		toggleEidt(tr);
+	}
+
+	tbody.onclick = function(e){
+		var el = e.target;
+		if(el.classList.contains("remove")){
+			deletehandler.call(el,e);
+		}else if(el.classList.contains("xiugai")){
+			xiugaihandler.call(el,e);
+		}else if(el.nodeName == 'TD'){
+			if(tbody.querySelector(".eidts")){
+				toggleEidt(tbody.querySelector(".eidts"));
+				
+			}
+				toggleEidt(el.parentElement);
+			
+			
+		}
+	}
+
+	var add = document.querySelector(".add");
+	var timerId;
+	var tips = document.querySelector(".tips");
+	add.onclick = function(){
+		if(students.length){
+			var ID = students[students.length-1].xuehao+1;
+
+		}else{
+			ID = 1001;
+		}
+		
+		var data=
+			{xuehao:ID,name:"lisi",sex:"nv",age:21,jiguan:"shanxi",card:12345}
+		;
+			var el = document.createElement("tr");
+			el.setAttribute("data-id",data.xuehao)
+			el.innerHTML = '<td data-role="xuehao">'+data.xuehao+'</td><td data-role="name">'+data.name+'</td><td data-role="sex">'+data.sex+'</td><td data-role="age">'+data.age+'</td><td data-role="jiguan">'+data.jiguan+'</td><td data-role="card">'+data.card+'</td><td><span class="xiugai">✐</span><input type="checkbox" data-id="+data.xuehao+"></td>'
+			tbody.appendChild(el);
+		students.push(data);
+	    localStorage.setItem("students",JSON.stringify(students));
+
+	    toggleEidt(el);
+	}
+	
+
+	var toggleEidt = function(tr){
+		
+		var tds = tr.querySelectorAll("td[data-role]");
+		if(tr.classList.contains("eidts")){
+			for(var i=0;i<tds.length;i++){
+     		var el = tds[i];   
+     		  		
+     		var temp=el.firstElementChild.value;
+     		el.innerHTML=temp;
+     		tr.classList.remove("eidts");
+     		var eidt = tr.querySelector(".xiugai");
+     		eidt.innerHTML="✐"
+     		setTimeout(function(){
+                tips.innerHTML=""
+                	},200)
+     	
+     	}
+		}else{
+			tr.classList.add("eidts")
+			for(var i=0;i<tds.length;i++){
+     		var el = tds[i];     		
+     		var temp=el.innerHTML;
+     		el.innerHTML='<input type="text" value="'+temp+'"/>';
+     		var eidt = tr.querySelector(".xiugai");
+     		eidt.innerHTML="✔"
+     		tbody.onkeyup = function(e){
+     			tips.innerHTML="正在保存。。。"
+                var el = e.target;
+                
+                var tr = el.parentElement.parentElement;
+                var ID = tr.getAttribute("data-id");
+               
+                var key = el.parentElement.getAttribute("data-role");
+                
+                var value = el.value;
+
+                clearTimeout(timerId);
+                timerId=setTimeout(function(){
+                	 render(ID,key,value)
+                	},5000)
+               
+
+     		}
+     	}
+     	tds[1].firstElementChild.focus();
+		}
+	}
+
+
+     var render = function(id,key,value){
+     	id=Number(id);
+     	for(var i=0;i<students.length;i++){
+     		if(students[i].xuehao==id){
+     			students[i][key]=value;
+     		}     		
+     	}
+     	localStorage.setItem("students",JSON.stringify(students));
+     	tips.innerHTML="保存成功！"
+     }
+
+
+
+</script>
+</html>

@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>事件对象</title>
 	<style>  
-		.da{
+		#da1{
 			width:200px;
 			height:200px;
 			background: red;
@@ -17,28 +17,31 @@
 	</style>
 </head>
 <body>
-	<div class='da'></div>
+	<div id='da1'></div>
 	<div class='da'></div>
 </body>
 <!-- js 写在body后 可以直接执行 不用window.onload -->
 <script>
-	// var el=document.getElementById("da");
-	// console.log(el);
-	var els=document.getElementsByClassName("da");
+	var el=document.getElementById("da1");
+	console.log(el);
+	// var els=document.getElementsByClassName("da");
 	// console.log(els);
 
-	for(var i=0;i<els.length;i++){
+	// for(var i=0;i<els.length;i++){
 		//循环给不同的对象注册函数 注册的函数 保存的地址是不一样的 执行的对象也不一样  函数是独立的，不同的  函数中的变量也是独立的 不能互相引用
-		els[i].onclick=(function(){
-			var kaiguan=true;
-			return function(e){
-				if(e.ctrlKey){
-					this.className=kaiguan?"da selected":"da";
-					kaiguan=!kaiguan;
-				}
-			}
-		})();
-	}
+
+
+
+	// 	els[i].onclick=(function(){
+	// 		var kaiguan=true;
+	// 		return function(e){
+	// 			if(e.ctrlKey){
+	// 				this.className=kaiguan?"da selected":"da";
+	// 				kaiguan=!kaiguan;
+	// 			}
+	// 		}
+	// 	})();
+	// }
 
 
 	// el.onclick=(function(){

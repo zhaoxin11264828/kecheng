@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	div{
+		border:1px solid black;
+	}
+	.yi{
+		width:400px;
+		height:400px;
+	}
+	.er{
+		width:300px;
+		height:300px;
+	}
+	.san{
+		width:200px;
+		height:200px;
+	}
+	</style>
+</head>
+<body>
+	<div class='yi'>1
+		<div class='er'>2
+			<div class='san'>3</div>
+		</div>
+	</div>
+</body>
+<script>
+	var yi = document.querySelector(".yi"),
+		er = document.querySelector(".er"),
+		san = document.querySelector(".san");
+
+		// 事件冒泡 事件捕获
+
+        // 事件覆盖
+		// yi.addEventListener("click",function(e){
+		// 	console.log("yi")
+				// });
+		// yi.addEventListener("click",function(){
+		// 	console.log("yi agin")
+		// },true);
+		// er.addEventListener("click",function(){
+		// 	console.log("er")
+		// });
+
+
+        // 阻止事件冒泡
+		// san.addEventListener("click",function(e){
+		// 	console.log("san")
+		// 	e.stopPropagation();
+		// });
+		
+         // onclick 事件移除
+		// yi.onclick = function(){
+		// 	console.log("yi")
+		// 	this.onclick = null;
+		// };
+
+		//addEventListener 添加事件 移除
+		// var hander = function(e){
+		// 	this.style.background='red';
+		// 	this.removeEventListener("click",hander)
+
+		// }
+		// san.addEventListener("click",hander)
+
+
+
+		// 自定义事件 
+		// var threeclick = new Event("threeclick");
+		// san.addEventListener("threeclick",function(){
+		// 	console.log("事件触发了")
+		// })
+		// san.addEventListener("click",(function(){
+		// 	var num = 0;
+		// 	return function(){
+		// 		num += 1;
+		// 		if(num === 3){
+		// 			san.dispatchEvent(threeclick)
+		// 		}
+		// 		setTimeout(function(){
+		// 			num = 0;
+		// 		},500)
+		// 	}
+		// })())
+
+		// var onthreeclick = function(el,fn){
+		// 	var threeclick = new Event("threeclick");
+		// 	el.addEventListener("threeclick",function(e){
+		// 	fn.call(el,e)
+		// })
+		// el.addEventListener("click",(function(){
+		// 	var num = 0;
+		// 	return function(){
+		// 		num += 1;
+		// 		if(num === 3){
+		// 			el.dispatchEvent(threeclick)
+		// 		}
+		// 		setTimeout(function(){
+		// 			num = 0;
+		// 		},500)
+		// 	}
+		// })())
+		// }
+
+
+		// onthreeclick(san,function(e){
+		// 	this.style.background = '#ffbb23';
+		// 	console.log(2);
+		// })
+
+
+
+		
+
+       // 阻止事件的默认行为
+		// document.addEventListener("mousedown",function(e){
+		// 		e.preventDefault();
+		// })
+
+
+        // 自定义 鼠标按下 5 秒执行事件
+  //       var clickdown = new Event("clickdown");
+		// san.addEventListener("clickdown",function(){
+		// 	console.log("事件触发了")
+		// })
+		// var timerid;
+		// san.addEventListener("mousedown",function(){
+			
+		// 	var num = 0;
+		// 	timerid = setInterval(function(){
+		// 		num+=1;
+		// 		if(num === 5){
+		// 			san.dispatchEvent(clickdown);
+		// 		}
+		// 	},1000)
+		// });
+		// san.addEventListener("mouseup",function(){
+		// 	clearInterval(timerid)
+		// })
+			
+
+
+		// var onlongpress = function(el,fn){
+		// 	var longpress = new Event("longpress");
+		// 	el.addEventListener("longpress",function(e){
+		// 		fn.call(this,e);
+		// 	})
+		// 	var timerid;
+		// 	el.addEventListener("mousedown",function(){
+		// 		var num = 0 ;
+		// 		timerid = setInterval(function(){
+		// 			num += 1;
+		// 			if(num === 3){
+		// 				el.dispatchEvent(longpress);
+		// 			}
+		// 		},1000)
+		// 	})
+		// 	el.addEventListener("mouseup",function(){
+		// 		clearInterval(timerid)
+		// 	})
+
+		// }		
+		
+  //       onlongpress(yi,function(e){
+  //       	var el = e.target;
+  //       	console.log(e)
+  //       })
+
+
+		// onlongpress(er,function(e){
+		// 	this.style.background = '#aaff89';
+		// 	console.log(1);
+		// })
+
+		// onlongpress(san,function(e){
+		// 	this.style.background = '#ffbb23';
+		// 	console.log(2);
+		// })
+
+
+		// var onlongpress = function(el,fn){
+		// 	var longpress = new Event("longpress");
+		// 	el.addEventListener("longpress",function(e){
+		// 		fn.call(this,e)
+		// 		//不要给自定义事件调用e.stopPropagation()
+		// 	})
+		// 	var timerid;
+		// 	el.addEventListener("mousedown",function(e){
+		// 		e.stopPropagation()
+				
+		// 		timerid = setTimeout(function(){
+  //                  el.dispatchEvent(longpress)
+		// 		},1000)
+		// 	})
+		// 	el.addEventListener("mouseup",function(){
+		// 		clearTimeout(timerid);
+		// 	})
+
+		// }
+
+		// onlongpress(er,function(e){
+		// 	console.log(1);
+		// })
+
+
+
+
+		Array.prototype.myForEach = function(fn){
+			for(var i = 0;i<this.length;i++){
+				fn.call(this,this[i]);
+			}
+		}
+		var arr = [1,2,3,4,5,6];
+		arr.myForEach(function(v){
+			console.log(this,v)
+		})
+
+
+</script>
+</html>

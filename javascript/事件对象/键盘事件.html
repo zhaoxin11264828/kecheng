@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>键盘事件</title>
-	<script src='data.js'></script>
+	
 	<style>
 	.box{
 		width:500px;
@@ -29,22 +29,22 @@
 	</div>
 </body>
 <script>
-	// document.onkeydown=function(e){
-	// 	console.log("keydown",e)
-	// }
-	// document.onkeyup=function(e){
-	// 	console.log("keyup",e)
-	// }
-	// document.onkeypress=function(e){
-	// 	console.log("keypress",e)
-	// }
-
-
-	var obj={};
-	for(var i=97;i<122;i++){
-		// obj[i]=String.fromCharCode(i);
-		console.log(i,String.fromCharCode(i))
+	document.onkeydown=function(e){
+		console.log("keydown",e)
 	}
+	document.onkeyup=function(e){
+		console.log("keyup",e)
+	}
+	document.onkeypress=function(e){
+		console.log("keypress",e)
+	}
+
+
+	// var obj={};
+	// for(var i=20000;i<30000;i++){
+	// 	obj[i]=String.fromCharCode(i);
+	// 	// console.log(i,String.fromCharCode(i))
+	// }
 	// console.log(JSON.stringify(obj));
 
 

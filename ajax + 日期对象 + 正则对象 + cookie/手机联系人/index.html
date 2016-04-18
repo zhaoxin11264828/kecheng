@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1"><!-- 不加这个标签  手机浏览器打开这个页面的时候 会按照手机的实际像素去渲染页面中的内容 这就会导致所有的东西都很小 加上这个标签 手机浏览器会按照逻辑像素去渲染页面内容 这样我们就可以根据不同手机的逻辑像素去布局 -->
+	<title>手机联系人</title>
+	<link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+	<div class="header">
+		<div class="back">
+			<span >˂</span>
+		</div>
+		<ul>
+			<li class='button refresh'>☺</li>
+			<li class='button add'>✚</li>
+		</ul>
+	</div>
+	<div class="container">
+	<div class = "contacts-inner">
+				
+			
+	<div class="findlist">
+		<ul>
+			
+		</ul>
+	</div>
+		<dl class='contacts'>
+			
+			
+		</dl>
+		</div>
+	</div>
+	
+
+	<div class='tips' style="display:none">
+		<div class='card position-center'>
+		   
+			<ul class='card1 position-center'>
+				<li class='head'>
+					<!-- <span class='back2'>˂</span>
+					<span class='button refresh2'>☺</li>
+					<li class='button add2'>✚</li> -->
+				</li>
+				<li class='avatar'></li>
+				<li class='bianji name' data-role='name'>zhangsan</li>
+				<li class='bianji num' data-role='num'>123232435</li>
+				<li class='phone'>
+					<!-- <span class='bianji num'>123232435</span> -->
+					<span class='phoneicon'>☎</span>
+				</li>
+				<li>
+					<div class="buttom delete">取消</div>
+					<div class="buttom submit">保存</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<script src="./js/index.js"></script>
+</body>
+</html>

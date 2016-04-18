@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>学生管理系统</title>
+	<style>
+		.content{
+			margin:10px auto;
+			width:1000px;
+			display: inline-block;
+			border:1px solid #ccc;
+			text-align: center;
+		}
+		.content table{
+			width: 100%;
+			border-spacing: 0;
+		}
+		tr{
+			margin:20px 0px;
+			padding:none;
+		}
+
+		td{
+			border-bottom:1px solid #ddd;
+			margin:none;
+			margin-top: 30px;
+		}
+		.add{
+			padding:10px 20px;
+			/*background: #aabbaa;*/
+			margin: 10px 0;
+			display: inline-block;
+			cursor: pointer;
+		}
+		.xiugai{
+			
+			cursor: pointer;
+		}
+		.remove{
+			cursor: pointer;
+			margin-left: 5px;
+			float:right;
+			margin-right: 120px;
+			margin-top: 20px;
+		}
+		input{
+			width:80px;
+			text-align: center;
+			outline:none;
+			border: none;
+			border-bottom: 1px solid red;
+		}
+		.submit{
+			cursor: pointer;
+		}
+		
+
+	</style>
+</head>
+<body>
+	<div class="content">
+	<div class='tips'></div>
+		<h1>学生信息管理系统</h1>
+
+		<table>
+		 <thead>
+			<tr>
+				<th data-role='xuehao' flag='true'>学号</th>
+				<th data-role='name' flag='true'>姓名</th>
+				<th data-role='sex' flag='true'>性别</th>
+				<th data-role='age' flag='true'>年龄</th>
+				<th data-role='jiguan' flag='true'>籍贯</th>
+				<th data-role='card' flag='true'>身份证号</th>
+				<th><input type="checkbox" class='checkall'></th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+		</table>
+		<span class="add">✚</span>
+		<span class="remove">✘</span>
+
+	</div>
+</body>
+<script>
+	var tbody = document.querySelector("tbody");
+	if(localStorage.students){
+		var students = JSON.parse(localStorage.getItem("students"));
+	}else{
+		var students=[
+			{xuehao:1001,name:"lisi",sex:"nv",age:21,jiguan:"shanxi",card:12345},
+			{xuehao:1002,name:"lisi",sex:'nv',age:21,jiguan:"shanxi",card:12345},
+			{xuehao:1003,name:"lisi",sex:'nv',age:21,jiguan:"shanxi",card:12345},
+			{xuehao:1004,name:"lisi",sex:'nv',age:21,jiguan:"shanxi",card:12345},
+			{xuehao:1005,name:'lisi',sex:'nv',age:21,jiguan:'shanxi',card:12345}
+		];
+		localStorage.setItem("students",JSON.stringify(students));	
+	}
+
+
+
+    var xuanranshuju = function(){
+    	tbody.innerHTML='';
+	for(var i in students){
+			var el = document.createElement("tr");
+			el.classList.add("click");
+			var data = students[i];
+			el.setAttribute("data-id",data.xuehao)
+			el.innerHTML="<td data-role='xuehao'>"+data.xuehao+"</td><td data-role='name'>"+data.name+"</td><td data-role='sex'>"+data.sex+"</td><td data-role='age'>"+data.age+"</td><td data-role='jiguan'>"+data.jiguan+"</td><td data-role='card'>"+data.card+"</td><td><input type='checkbox' value='' name=''  class='check' data-id="+data.xuehao+"></span></td>"			
+			tbody.appendChild(el);
+		}
+	}
+	xuanranshuju();
+
+	
+	var deletedata = function(id){
+		var newarr = [];
+		for(var k in students){
+			var v = students[k];
+			if(v.xuehao !== id){
+				newarr.push(v);		
+			}
+		}
+		students = newarr;
+	    localStorage.setItem("students",JSON.stringify(students));
+    }
+
+
+	var deletebtn = document.querySelector(".remove");
+	deletebtn.onclick = function(){
+		var check = document.querySelectorAll(".check");
+		for(var i=0;i<check.length;i++){
+			
+			var el = check[i];
+			var select = el.checked;
+			if(select==true){
+				tbody.removeChild(el.parentElement.parentElement);
+				var ID=Number(el.getAttribute("data-id"));
+				deletedata(ID);
+			}
+		}
+	}
+	
+	var xiugaihandler = function(e){
+		var tr = this.parentElement;
+		toggleEidt(tr);
+		
+	}
+
+	var addhandler = function(e){
+		var tr = this.parentElement.parentElement;
+		toggleEidt(tr);
+		
+	}
+
+var checkall = document.querySelector(".checkall");
+	tbody.onclick = function(e){
+		var el = e.target;
+		if(el.parentElement.classList.contains("click")){
+			xiugaihandler.call(el,e);
+		}else if(el.classList.contains("xiugai")){
+			addhandler.call(el,e);
+		}else if(el.classList.contains("check")){
+			var checks = this.querySelectorAll(".check");
+			for(var i=0,j=0;i<checks.length;i++){
+				if(checks[i].checked){
+					j+=1;
+					
+				}
+             
+			}
+			checkall.checked = (j === students.length);
+
+
+		}
+	}
+
+	
+	checkall. onclick = function(){
+		var checks = tbody.querySelectorAll(".check");
+		for(var i = 0;i<checks.length;i++){
+			checks[i].checked=this.checked;
+		}
+	}
+
+
+	var add = document.querySelector(".add");
+	var timerId;
+	var tips = document.querySelector(".tips");
+	add.onclick = function(){
+		if(students.length){
+			var ID = students[students.length-1].xuehao+1;
+
+		}else{
+			ID = 1001;
+		}
+		
+		var data=
+			{xuehao:ID,name:"lisi",sex:"nv",age:21,jiguan:"shanxi",card:12345}
+		;
+			var el = document.createElement("tr");
+			el.classList.add("click");
+			el.setAttribute("data-id",data.xuehao)
+			el.innerHTML = '<td data-role="xuehao">'+data.xuehao+'</td><td data-role="name">'+data.name+'</td><td data-role="sex">'+data.sex+'</td><td data-role="age">'+data.age+'</td><td data-role="jiguan">'+data.jiguan+'</td><td data-role="card">'+data.card+'</td><td><span class="xiugai" style="display:inline-block">✔</span><input type="checkbox"  class="check" data-id='+data.xuehao+'></td>'
+			tbody.appendChild(el);
+		students.push(data);
+	    localStorage.setItem("students",JSON.stringify(students));
+
+	    toggleEidt(el);
+	}
+	
+	var trs = tbody.querySelectorAll(".click");
+    
+	var toggleEidt = function(tr){
+		var tds = tr.querySelectorAll("td[data-role]");
+		if(tr.classList.contains("eidts")==false){
+			
+			for(var i=0;i<trs.length;i++){
+				var trr = trs[i];
+				if(trr.classList.contains("eidts")){
+					var tdss = trr.querySelectorAll("td[data-role]");
+					for(var i=1;i<tdss.length;i++){
+     					var el = tdss[i];   		
+     					var temp=el.firstElementChild.value;
+     					el.innerHTML=temp;
+     					tr.classList.remove("eidts")
+     					setTimeout(function(){
+                		tips.innerHTML=""},200)
+     	
+     	}
+					trr.classList.remove("eidts")
+				}
+			}
+			tr.classList.add("eidts")
+			tips.innerHTML="";
+			for(var i=1;i<tds.length;i++){
+     		var el = tds[i];     		
+     		var temp=el.innerHTML;
+     		var type = el.getAttribute("data-role");
+     		if(type == "sex"){
+     			el.innerHTML='<select name="sex" id=""><option value="nan">nan</option><option value="nv">nv</option></select>';
+     		}else{
+     			el.innerHTML='<input type="text" value="'+temp+'"/>';
+     		}
+     		
+     		tbody.onkeyup = function(e){
+     			tips.innerHTML="正在保存。。。"
+                var el = e.target;
+                
+                var tr = el.parentElement.parentElement;
+                var ID = tr.getAttribute("data-id");
+               
+                var key = el.parentElement.getAttribute("data-role");                
+                var value = el.value;
+
+                clearTimeout(timerId);
+                timerId=setTimeout(function(){
+                	 render(ID,key,value)
+                	},3000)
+               
+
+     		}
+     	}
+     	tds[1].firstElementChild.focus();
+		}else{
+			for(var i=1;i<tds.length;i++){
+     		var el = tds[i];    		
+     		var temp=el.firstElementChild.value;
+     		el.innerHTML=temp;
+     		
+     		// var eidt = tr.querySelector(".xiugai");
+     		// eidt.innerHTML="";
+     		
+     		tr.classList.remove("eidts")
+     		setTimeout(function(){
+                tips.innerHTML=""
+                	},200)
+		}
+	}
+}
+
+
+     var render = function(id,key,value){
+     	id=Number(id);
+     	for(var i=0;i<students.length;i++){
+     		if(students[i].xuehao==id){
+     			students[i][key]=value;
+     		}     		
+     	}
+     	localStorage.setItem("students",JSON.stringify(students));
+     	tips.innerHTML="保存成功！"
+     }
+
+    
+     // var xuehaohandler = function(e){
+     // 	if(tbody.firstElementChild){
+     // 		 var trrs = tbody.querySelectorAll("tr");
+     // 		for(var i = 0;i<trrs.length;i++){
+     // 		var el = trrs[i];
+     // 		tbody.removeChild(el);
+
+     // 	}
+     // 		togglepaixu(this);
+     // 		xuanranshuju();
+     		
+     // 	}
+     // }
+
+
+     // var togglepaixu = function(td){
+     // 	if(td.classList.contains("da")){
+     // 		students.sort(function(x,y){
+     // 		return x.xuehao < y.xuehao; 
+     // 	})
+     // 		td.classList.remove("da");
+     // 	}else{
+     // 		td.classList.add("da");
+     // 		students.sort(function(x,y){
+     // 		return x.xuehao > y.xuehao; 
+     // 	})
+     // 	}
+     // }
+
+
+
+     // var agehandler = function(e){
+     // 	if(tbody.firstElementChild){
+     // 		 var trrs = tbody.querySelectorAll("tr");
+     // 		for(var i = 0;i<trrs.length;i++){
+     // 		var el = trrs[i];
+     // 		tbody.removeChild(el);
+
+     // 	}
+     // 		toggleage(this);
+     // 		xuanranshuju();
+     		
+     // 	}
+     // }
+
+
+     // var toggleage = function(td){
+     // 	if(td.classList.contains("da")){
+     // 		students.sort(function(x,y){
+     // 		return x.age < y.age; 
+     // 	})
+     // 		td.classList.remove("da");
+     // 	}else{
+     // 		td.classList.add("da");
+     // 		students.sort(function(x,y){
+     // 		return x.age > y.age; 
+     // 	})
+     // 	}
+     // }
+
+
+
+ //    var thead = document.querySelector("thead");
+ //     thead.onclick = function(e){
+	// 	var el = e.target;
+	// 	if(el.classList.contains("xuehao")){
+	// 		xuehaohandler.call(el,e);
+	// 	}if(el.classList.contains("age")){
+	// 		agehandler.call(el,e);
+	// 	}
+	// }
+
+
+// 排序
+	var thead = document.querySelector("thead");
+	thead.onclick = function(e){
+		var el = e.target;
+		if(el.nodeName === 'TH'){
+			var sortkey = el.getAttribute("data-role");
+			var state = (el.getAttribute("flag")==='true')?true:false;
+			el.setAttribute('flag',!state) ;
+			students=students.sort(function(x,y){
+				return state?x[sortkey]<y[sortkey]:x[sortkey]>y[sortkey];
+			})
+			xuanranshuju();
+		}
+		
+	}
+
+
+
+</script>
+</html>

@@ -38,6 +38,7 @@
 	    .fabubtn1{
 	    	background: #aaff89;
 	    	color:white;
+	    	cursor: pointer;
 	    }
 		.feeds{
 			width: 320px;
@@ -45,6 +46,7 @@
 			border:1px solid #ccc;
 			margin:5px auto;
 			padding:20px 0px;
+			overflow-y:auto; 
 		}
 		.loading{
 			width:300px;
@@ -57,25 +59,40 @@
 			margin-left: 10px;
 		}
 		.feed{
-			width:300px;
-			height:150px;
+			width:260px;
+			height:110px;
 			border:1px solid #ccc;
 			margin-bottom: 5px;
 			margin-left: 10px;
+			padding:20px;
 
 		}
 		.zan-active{
-			color:#ff3456;
+			color:#34ff23;
+		}
+		.icon{
+			width: 20px;
+			height:20px;
+			color: #ccc;
+			float: right;
+			margin-right: 8px;
+			margin-top: 0px;
+			cursor: pointer;
+		}
+		.xinwb{
+			margin-left:110px;
 		}
 
 	</style>
-</head>
+</head> 
 <body>
-    <div class='tip'>有5条新微博</div>
+    <div class='tip'><span class="xinwb">有5条新微博</span>
+    <div class="icon">✚</div>
+    </div>
     <div class="fabunew">
     <textarea class='text' name="news" id="" cols="30" rows="10"></textarea>
     <div class='fabu'>
-      <p>你还能输入<span>40</span>字</p><span class='fabubtn'>发布</span>
+      <p class="tishi">你还能输入<span class='num'>140</span>字</p><span class='fabubtn'>发布</span>
     </div>
     </div>
 	<div class='feeds'>
@@ -101,48 +118,68 @@
 	var fabu=document.querySelector(".fabu");
 	setTimeout(function(){
 		load.style.display="none";
-		text.style.display="inline-block";
-		fabu.style.display="inline-block";
+		// text.style.display="inline-block";
+		// fabu.style.display="inline-block";
 		for(var i=0,el;i<2;i++){
 			var data=shuzu[i];
 			el=document.createElement("div");
 			el.classList.add("feed");
-			el.innerHTML="<span>"+data.name+"</span><p>"+data.news+"</p><span class='zan zan-active'>"+"赞("+data.zan+")"+"</span>";
+			el.innerHTML="<span>"+data.name+"</span><p>"+data.news+"</p><span class='zan zan-active'>"+"赞✮("+data.zan+")"+"</span>";
 		    feeds.appendChild(el);
 		}
 		
 	},2000)
 
+	var icon=document.querySelector(".icon");
+	icon.onclick=function(){
+		if(icon.innerHTML==="✚"){
+		text.style.display="inline-block";
+		fabu.style.display="inline-block";
+		icon.innerHTML="✘";
+	}else{
+		text.style.display="none";
+		fabu.style.display="none";
+		icon.innerHTML="✚";
+	}
+	}
+
 	var zanhandel=function(e){
 		if(this.classList.contains("zan-active")){
-			var num=parseInt(this.innerHTML.slice(2).slice(0,-1))+1;				
-			this.innerHTML="赞"+"("+num+")";
+			var num=parseInt(this.innerHTML.slice(3).slice(0,-1))+1;				
+			this.innerHTML="赞✮"+"("+num+")";
 			this.classList.toggle("zan-active")
 		}else{
-			var num=parseInt(this.innerHTML.slice(2).slice(0,-1))-1;				
-			this.innerHTML="赞"+"("+num+")";
+			var num=parseInt(this.innerHTML.slice(3).slice(0,-1))-1;				
+			this.innerHTML="赞✮"+"("+num+")";
 			this.classList.toggle("zan-active")
 	}
 }
 
 	feeds.onclick=function(e){
 		var el=e.target;
+		console.log(el)
 		if(el.classList.contains("zan")){
 			zanhandel.call(el,e)
 		}
 	}
 
 
-	var tip=document.querySelector(".tip");
-	tip.onclick=function(){
+	var xinwb=document.querySelector(".xinwb");
+	xinwb.onclick=function(){
+		if(xinwb.innerHTML==="有5条新微博"){
 		for(var i=0,el;i<5;i++){
 			var ran=Math.floor(Math.random()*shuzu.length)
 			var data=shuzu[ran];
 			el=document.createElement("div");
 			el.classList.add("feed");
-			el.innerHTML="<span>"+data.name+"</span><p>"+data.news+"</p><span class='zan zan-active'>"+"赞("+data.zan+")"+"</span>";
+			el.innerHTML="<span>"+data.name+"</span><p>"+data.news+"</p><span class='zan zan-active'>"+"赞✮("+data.zan+")"+"</span>";
 			var first=feeds.firstElementChild;
 			feeds.insertBefore(el,first);
+			xinwb.innerHTML="暂无新微博"
+			setTimeout(function(){
+				xinwb.innerHTML="有5条新微博"
+			},20000)
+		}
 		}
 	}
 
@@ -155,12 +192,36 @@
 		}else{
 			fabubtn.classList.remove("fabubtn1");
 		}
-	}
+	
+
+ 	if(fabubtn.classList.contains("fabubtn1")){
+ 		console.log(text.value)
+ 		fabubtn.onclick=function(){
+ 			text.style.display="none";
+			fabu.style.display="none";
+			icon.innerHTML="✚";
+ 			el=document.createElement("div");
+			el.classList.add("feed");
+			el.innerHTML="<span>我</span><p>"+text.value+"</p><span class='zan zan-active'>"+"赞✮(0)"+"</span>";
+			var first=feeds.firstElementChild;
+			feeds.insertBefore(el,first);
+ 		}
+ 	}
+}
+
 	text.onfocus=function(){
          text.classList.add("text1");
 	}
+	var num=document.querySelector(".num");
+	var tishi=document.querySelector(".tishi");
 	text.onkeyup=function(){
-		
+		var number=text.value.length;
+		num.innerHTML=140-number;
+		if(number>140){
+			num.style.display="none";
+			tishi.innerHTML="你已超出140字,将不能发布";
+
+		}
 	}
 
 </script>
