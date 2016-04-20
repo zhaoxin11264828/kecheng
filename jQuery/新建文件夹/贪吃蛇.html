@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>贪吃蛇</title>
+	<style>
+	.she{
+		width:600px;
+		height:600px;
+		border:1px solid black;
+		position: absolute;
+		top:0;
+		left:0;
+		bottom: 0;
+		right:0;
+		margin: auto;
+	}
+	.block{
+		width: 30px;
+		height: 30px;
+		float: left;
+		background: red;
+	}
+	.snake{
+		background: green;
+	}
+	.food{
+		background: #ffbbaa;
+	}
+	</style>
+</head>
+<body>
+	<div class="she">
+		<!-- <div class="shiwu"></div> -->
+	</div>
+
+	<script src="./jquery工程文件/jquery-1.12.0.js"></script>
+	<script>
+     ////场景
+     var row = 20;
+     for(var i=0;i<row;i++){
+     	for(var j=0;j<row;j++){
+     		$('<div id="'+i+'-'+j+'"></div>').addClass("block").appendTo($('.she'))
+     	}
+     } 
+     
+
+     ////画蛇  食物
+     var snake = [{x:0,y:0},{x:0,y:1},{x:0,y:2}];
+     snake.forEach(function(v){
+     	$('#'+v.x+'-'+v.y).addClass('snake')
+     })
+
+     var food = {x:12,y:13}
+     $('#'+food.x+'-'+food.y).addClass('food')
+
+     ///食物随机出现
+     var fangfood = function(){
+     	$('#'+food.x+'-'+food.y).removeClass('food')
+     	var foodx = Math.floor(Math.random()*20);
+     	var foody = Math.floor(Math.random()*20);
+     	food = {x:foodx,y:foody}
+     	console.log(foodx,foody)
+     	$('#'+foodx+'-'+foody).addClass('food')
+     }
+     
+     ///蛇移动
+     var direction = 40;
+     var oldhead = {x:0,y:2}
+     var oldX = oldhead.x;
+      var oldY = oldhead.y;
+
+     var move = function(){
+     	if(direction == 39){
+           oldX = oldhead.x;
+     	   oldY = oldhead.y+1;
+     	} 
+     	else if(direction == 37){
+     	   oldX = oldhead.x;
+     	  oldY = oldhead.y-1;
+     	}
+     	 else if(direction == 38){
+     	  var oldX = oldhead.x-1;
+     	  var oldY = oldhead.y;
+     	}
+     	else if(direction == 40){
+     	   oldX = oldhead.x+1;
+     	   oldY = oldhead.y;
+     	}
+     	
+       var newhead = {x:oldX,y:oldY}
+       if(oldX<0 || oldY<0 || oldX>19||oldY>19){
+       	console.log("撞墙了")
+       	clearInterval(timerId)
+       }
+       snake.forEach(function(v){
+       	if(v.x == oldX && v.y == oldY){
+       	   console.log("撞墙了")
+       	   clearInterval(timerId)
+       	}
+       })
+       ////吃食物
+       if(newhead.x == food.x && newhead.y == food.y){
+       	  oldhead = newhead;
+       	  $('#'+oldX+'-'+oldY).addClass('snake');
+          snake.push(newhead)
+          fangfood();
+       }else{
+       		oldhead = newhead;
+       	    $('#'+oldX+'-'+oldY).addClass('snake');
+            snake.push(newhead)
+            var obj = snake.shift()
+            $('#'+obj.x+'-'+obj.y).removeClass('snake');
+       }
+              
+     }
+
+
+     ///控制蛇的移动方向
+
+       document.addEventListener("keydown",function(e){
+     	if(e.keyCode<37 || e.keyCode>40){
+     		// clearInterval(timerId)
+     		return;
+     	}
+     		direction = e.keyCode; 
+     	})
+
+			 
+
+  
+     var timerId = setInterval(move,200)
+     
+     
+     ////蛇撞墙 撞自己
+	</script>
+</body>
+</html>

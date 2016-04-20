@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>new用法</title>
+</head>
+<body>
+	<script>
+		javascript中构建一个对象的四种方式
+		1、字面量的形式 去构建一个对象
+		var obj = {
+			"a":12;
+			"b":234;
+			"我是中国人"："aaa"
+		}
+		以字面量的形式创建出来的对象
+		原型就是Object.prototype 这个对象  Object 是一个构造函数 字面量定义一个对象是 调用了这个函数
+
+		2、构造函数 一般不用这个方式构建
+		var obj2 = new Object();
+		obj2.a = 1;
+
+		3、利用  Object.create() 方法
+		从一个已有的对象开始构建新的对象 （继承）
+		var mao = {
+			zhuzi:4,
+			erduo:1,
+			nao : function(){
+				console.log('nao nao nao')
+			}
+		}
+
+		var bosimao = Object.create(mao);
+		bosimao.dianjiaojian= function(){
+			console.log(1)
+		}
+		cosnole.dir(bosimao)
+
+		4、用new 关键字来构造对象
+		var mao = function(){
+			this.zhuazi = 4;
+			this.erduo = 1;
+		}
+		mao.prototype.nao = function(){
+			cosnole.log("nao");
+		}
+		var bosimao = new mao();
+
+		每个"函数"对象身上，都有一个其他对象不具备的属性 叫做`prototype`
+
+		用new 关键字的时候发生了什么
+		1、构建一个空对象{}  原型链暂时指向Object
+		2、mao.call({})把mao那个函数作为这个空对象的临时方法调用了一次
+		{zhuazi:4,erduo:1}
+		3、把mao那个函数对象身上的prototype那个属性拿来 作为自己原型链中的一条
+		4、返回最终对象 
+
+
+		 var cc = {};  mao.call(cc) cc={mao:function(){}}
+		 call  把对象函数作为临时方法调用
+
+	</script>
+</body>
+</html>

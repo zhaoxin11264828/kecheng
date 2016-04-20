@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jquery链式调用原理</title>
+</head>
+<body>
+	<script>
+	var obj = {
+		width:100,
+		height:200,
+		addH:function(){
+			this.width += 10;
+			return this;
+		},
+		addW:function(){
+			this.height += 10;
+			return this;
+		}
+	}
+	obj.addH().addW().addH().addW();
+	console.log(obj.width,obj.height)
+
+	</script>
+</body>
+</html>
