@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>贪吃蛇</title>
+	<style>
+  ul,li{
+    margin:0;
+    list-style: none;
+  }
+	.she{
+		width:600px;
+		height:600px;
+		
+		position: absolute;
+		top:0;
+		left:0;
+		bottom: 0;
+		right:0;
+		margin: auto;
+ /*   background: #aaffbb;*/
+	}
+  .she-content{
+    background: #aaffbb;
+    border:1px solid black;
+  }
+	.block{
+		margin:0 1px 1px 0;
+		float: left;
+    background: #aa8967;
+	}
+	.snake{
+		background: #99aaff;
+	}
+	.food{
+		background: #ffbbaa;
+	}
+  li{
+    margin:10px;
+  }
+  .list{
+    background: #aabbff;
+    width:180px;
+    height:580px;
+    float: left;
+    position: absolute;
+    top:0;
+    left:0;
+    bottom: 0;
+    margin: auto;
+    padding:20px;
+  }
+  .button{
+    width:100px;
+    height:30px;
+    background: #ff8899;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+  }
+  .active{
+    background:#aaff89;
+  }
+	</style>
+</head>
+<body>
+  <div>
+    <ul class="list">
+    <h3>贪吃蛇</h3>
+      <li><input id="hangshu" type="text" value="请输入数值"></li>
+      <li> <h4>情景模式</h4>
+      <select name="moshi" id="moshi">
+
+        <option value="20">20*20</option>
+        <option value="30">30*30</option>
+        <option value="40">40*40</option>
+        <option value="50">50*50</option>
+      </select></li>
+      <li id="20" class="num button">20*20</li>
+      <li id="30" class="num button">30*30</li>
+      <li id="40" class="num button">40*40</li>
+      <li id="suspend" class="button">暂停</li>
+      <li id="restart" class="button">再来一局</li>
+      <li id="start" class="button">开始</li>
+    </ul>
+
+  </div>
+	<div class="she">
+		<div class="she-content"></div>
+	</div>
+
+	<script src="./jquery工程文件/jquery-1.12.0.js"></script>
+	<script>
+    $(function(){
+      //全局变量
+      var she = [{x:0,y:0},{x:0,y:1},{x:0,y:2}],
+          shiwu = {},
+          fangxiang = 40,
+          hang;
+       ////场景绘制
+
+
+       //公用函数
+       ////坐标转id
+       var zb2id = function(x,y){
+        return x+'-'+y;
+       }
+       ////布景
+       var bujing = function(){
+        hang = hang || 20
+        var i = 0,
+        j = 0, 
+        wh = Math.floor(600/hang),
+        snake = $('.she-content');
+        snake.empty();
+        for(;i<hang;i++){
+          for(j=0;j<hang;j++){
+            $('<div>').addClass('block').attr('id',zb2id(i,j)).width(wh-1).height(wh-1).appendTo(snake);
+          }
+        }
+        snake.width(wh*hang).height(wh*hang)
+
+       }
+       bujing()
+
+       var bujingbutton = function(){
+        $('.active').removeClass('active')
+        this.addClass('active')
+        bujing()
+        she = [{x:0,y:0},{x:0,y:1},{x:0,y:2}];
+        huashe();
+        fangshiwu();
+       }
+
+       $('#20').bind("click",function(e){
+        hang = 20;
+        bujingbutton.call($(this));
+       })
+       $('#30').bind("click",function(){
+        hang = 30;
+        bujingbutton.call($(this));
+       })
+       $('#40').bind("click",function(){
+        hang = 40;
+         bujingbutton.call($(this));
+       })
+       ///画蛇
+       var huashe = function(){
+        she.forEach(function(v){
+        $('#'+zb2id(v.x,v.y)).addClass('snake')
+
+       })
+       }
+       huashe()
+       ///放食物
+       var fangshiwu = function(){
+        var foodx = Math.floor(Math.random()*hang),
+            foody = Math.floor(Math.random()*hang);
+            $('#'+zb2id(foodx,foody)).addClass("food");
+            shiwu.x = foodx;
+            shiwu.y = foody;
+       }
+       fangshiwu()
+       ///蛇移动
+
+       var move = function(){
+        var jiutou = she[she.length-1];
+        ///判断方向
+        var xintou ={};
+          if(fangxiang == 39){
+           xintou.x = jiutou.x ;
+           xintou.y = jiutou.y+1;
+        }else if(fangxiang == 38){
+           xintou.x = jiutou.x-1 ;
+           xintou.y = jiutou.y;
+        }else if(fangxiang == 37){
+          xintou.x = jiutou.x ;
+           xintou.y = jiutou.y-1;
+        }else if(fangxiang == 40){
+           xintou.x = jiutou.x+1 ;
+           xintou.y = jiutou.y;
+        }
+
+        ///撞墙
+       
+       if(xintou.x<0 || xintou.y<0 || xintou.x>hang-1 || xintou.y>hang-1){
+        alert("撞墙了")
+        clearInterval(timerId)
+        return;
+       }
+       ////撞自己
+       she.forEach(function(v){
+        if(v.x == xintou.x && v.y == xintou.y){
+           alert("撞自己了")
+           clearInterval(timerId)
+           return;
+        }
+       })
+        ///吃上食物
+        if(shiwu.x == xintou.x && shiwu.y == xintou.y){
+          she.push(xintou);
+          $('#'+zb2id(xintou.x,xintou.y)).addClass('snake');
+          $('#'+zb2id(shiwu.x,shiwu.y)).removeClass('food');
+          fangshiwu();
+        }else{
+           she.push(xintou);
+          $('#'+zb2id(xintou.x,xintou.y)).addClass('snake');
+          var weiba = she.shift();
+          $('#'+zb2id(weiba.x,weiba.y)).removeClass('snake');
+        }
+
+       }
+       ////获取需求行数
+       $('#hangshu').bind("keydown",function(e){
+        if(e.keyCode == 13){    
+         hang = $(this).val();
+         bujing()
+         if(hang == 20){
+            bujingbutton.call($('#20'));
+         }else if(hang == 30){
+            bujingbutton.call($('#30'));
+         }else if(hang == 40){
+           bujingbutton.call($('#40'));
+         }else{
+           $('.active').removeClass('active');
+         }
+        }        
+       })
+
+       ////方向控制
+       $(document).bind("keydown",function(e){
+        if(e.keyCode<37 || e.keyCode>40){
+          return;
+        }
+        fangxiang = e.keyCode;
+       })
+
+       ////暂停控制
+       $('#suspend').bind("click",function(){
+        clearInterval(timerId);
+       })
+       $('#start').bind("click",function(){
+        timerId = setInterval(move,500);
+       })
+       $('#restart').bind("click",function(){
+        clearInterval(timerId);
+        timerId = null;
+        $('.snake').removeClass('snake')
+        $('.food').removeClass('food')
+        she = [{x:0,y:0},{x:0,y:1},{x:0,y:2}];
+        huashe();
+        fangshiwu();
+        timerId = setInterval(move,10);
+       })
+    })
+     
+	</script>
+</body>
+</html>
